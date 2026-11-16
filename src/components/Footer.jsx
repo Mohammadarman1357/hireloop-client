@@ -33,7 +33,7 @@ const footerGroups = [
 const socialLinks = [
   {
     name: "Facebook",
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/armanhabib.17",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2v-2c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" />
@@ -42,7 +42,7 @@ const socialLinks = [
   },
   {
     name: "Pinterest",
-    href: "https://pinterest.com",
+    href: "https://pin.it/7HwreILek",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 2a10 10 0 0 0-3.65 19.31c-.09-.83-.17-2.1.04-3 .18-.8 1.16-4.93 1.16-4.93s-.3-.6-.3-1.49c0-1.39.81-2.43 1.82-2.43.86 0 1.28.65 1.28 1.43 0 .87-.55 2.17-.84 3.38-.24 1.01.51 1.83 1.5 1.83 1.8 0 3.18-1.9 3.18-4.65 0-2.43-1.74-4.13-4.22-4.13-2.88 0-4.57 2.16-4.57 4.4 0 .87.34 1.8.76 2.3.08.1.09.19.07.3l-.28 1.13c-.04.18-.15.22-.34.13-1.27-.59-2.06-2.43-2.06-3.91 0-3.19 2.32-6.12 6.69-6.12 3.51 0 6.25 2.5 6.25 5.84 0 3.48-2.19 6.28-5.23 6.28-1.02 0-1.98-.53-2.31-1.15l-.63 2.4c-.23.88-.85 1.98-1.26 2.65A10 10 0 1 0 12 2Z" />
@@ -51,7 +51,7 @@ const socialLinks = [
   },
   {
     name: "LinkedIn",
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/in/mohammadarman1",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M6.5 8.2a1.9 1.9 0 1 0 0-3.8 1.9 1.9 0 0 0 0 3.8ZM4.9 9.6h3.2v9.8H4.9V9.6Zm5.2 0h3v1.3h.1a3.3 3.3 0 0 1 3-1.7c3.2 0 3.8 2.1 3.8 4.8v5.4h-3.2v-4.8c0-1.2 0-2.8-1.7-2.8s-1.9 1.3-1.9 2.7v4.9h-3.1V9.6Z" />
@@ -150,7 +150,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4 text-sm text-[#414141] sm:flex-row sm:flex-wrap sm:items-center sm:gap-7">
 
             <p >
-              &copy; Copyright 2026 - Mohammad Arman
+              &copy; Copyright 2026 - Hire Loop
             </p>
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-1">
