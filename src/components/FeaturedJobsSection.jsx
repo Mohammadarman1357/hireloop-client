@@ -148,7 +148,7 @@ export default function FeaturedJobsSection() {
 
           {/* Heading */}
           <h2 className="max-w-[550px] text-[30px] font-medium leading-[1.2] tracking-[-1.2px] text-white sm:text-[36px] md:text-[40px]">
-            The roles you'd never
+            The roles you did never
             <br />
             find by searching
           </h2>

@@ -1,5 +1,7 @@
 import FeaturedJobsSection from "@/components/FeaturedJobsSection";
+import FeaturesSection from "@/components/FeaturesSection";
 import HeroSection from "@/components/HeroSection";
+import PricingCtaSection from "@/components/PricingCtaSection";
 import StatsSection from "@/components/StatsSection";
 import Image from "next/image";
 
@@ -10,6 +12,8 @@ export default function Home() {
       <HeroSection></HeroSection>
       <StatsSection></StatsSection>
       <FeaturedJobsSection></FeaturedJobsSection>
+      <FeaturesSection></FeaturesSection>
+      <PricingCtaSection></PricingCtaSection>
 
     </div>
   );
