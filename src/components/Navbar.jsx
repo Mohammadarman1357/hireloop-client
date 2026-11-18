@@ -58,7 +58,7 @@ export default function Navbar() {
             {/* Sign In */}
             <li>
               <Link
-                href="/sign-in"
+                href="/auth/signin"
                 className=" text-[#7568ff] transition-colors hover:text-[#968dff]"
               >
                 Sign In
@@ -142,7 +142,7 @@ export default function Navbar() {
 
               <li>
                 <Link
-                  href="/sign-in"
+                  href="/auth/signin"
                   onClick={() => setIsMenuOpen(false)}
                   className="block rounded-lg px-3 py-2.5 text-xs font-medium text-[#968dff] hover:bg-white/5"
                 >
