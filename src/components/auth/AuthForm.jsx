@@ -15,7 +15,7 @@ import {
   LogoApple,
 } from "@gravity-ui/icons";
 
-import { authClient } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import { BsGoogle } from "react-icons/bs";
 
 export default function AuthForm({ initialMode = "signup" }) {
@@ -71,17 +71,17 @@ export default function AuthForm({ initialMode = "signup" }) {
       let response;
 
       if (isSignup) {
-        response = await authClient.signUp.email({
+        response = await signUp.email({
           name: name.trim(),
           email: normalizedEmail,
           password,
-          callbackURL: "/dashboard",
+          callbackURL: "/",
         });
       } else {
-        response = await authClient.signIn.email({
+        response = await signIn.email({
           email: normalizedEmail,
           password,
-          callbackURL: "/dashboard",
+          callbackURL: "/",
         });
       }
 
@@ -99,7 +99,7 @@ export default function AuthForm({ initialMode = "signup" }) {
       );
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/");
         router.refresh();
       }, 1000);
 
