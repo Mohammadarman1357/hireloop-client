@@ -153,13 +153,13 @@ export default function AuthForm({ initialMode = "signup" }) {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-[32px] font-medium tracking-[-1.2px] text-white"
               >
-                {isSignup ? "Create account" : "Log in"}
+                {isSignup ? "Create account" : "Welcome Back"}
               </motion.h1>
 
               <p className="mx-auto mt-2 max-w-[300px] text-[12px] leading-[1.7] text-white/50">
                 {isSignup
                   ? "Create your HireLoop account and start connecting with opportunities."
-                  : "Log in to your account and seamlessly continue managing your projects, ideas, and progress."}
+                  : "Sign in to your account and seamlessly continue managing your projects, ideas, and progress."}
               </p>
             </div>
 
@@ -273,7 +273,7 @@ export default function AuthForm({ initialMode = "signup" }) {
                   ? "Please wait..."
                   : isSignup
                     ? "Create account"
-                    : "Log in"}
+                    : "Sign in"}
               </button>
 
             </form>
