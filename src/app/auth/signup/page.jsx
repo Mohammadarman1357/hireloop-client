@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
+import { Description, Label, Radio, RadioGroup } from "@heroui/react";
 
 import {
   Envelope,
@@ -24,6 +25,7 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("seeker");
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,13 +62,14 @@ export default function SignupPage() {
         name: name.trim(),
         email: normalizedEmail,
         password,
+        role,
         callbackURL: "/",
       });
 
       if (response.error) {
         setErrorMessage(
           response.error.message ||
-            "Something went wrong. Please try again."
+          "Something went wrong. Please try again."
         );
         return;
       }
@@ -196,6 +199,30 @@ export default function SignupPage() {
                   )}
                 </button>
               </div>
+
+              {/* Role Selection */}
+              <div className="flex flex-col gap-4">
+                <Label>Select Role : </Label>
+                <RadioGroup onChange={(value) => setRole(value)} defaultValue="seeker" name="role" orientation="horizontal">
+                  <Radio value="seeker">
+                    <Radio.Content>
+                      <Radio.Control>
+                        <Radio.Indicator />
+                      </Radio.Control>
+                      Job Seeker
+                    </Radio.Content>
+                  </Radio>
+                  <Radio value="recruiter">
+                    <Radio.Content>
+                      <Radio.Control>
+                        <Radio.Indicator />
+                      </Radio.Control>
+                      Recruiter
+                    </Radio.Content>
+                  </Radio>
+                </RadioGroup>
+              </div>
+
 
               {/* Error and Success Messages */}
               <AnimatePresence>
