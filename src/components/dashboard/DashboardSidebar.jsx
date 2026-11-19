@@ -34,9 +34,8 @@ export function DashboardSidebar() {
                 {navContent}
             </aside>
             <Drawer>
-                <Button className="lg:hidden" variant="secondary">
+                <Button className="lg:hidden mt-4 rounded-[8px] text-2xl" variant="ghost">
                     <LayoutSideContentLeft />
-                    Sidebar
                 </Button>
                 <Drawer.Backdrop>
                     <Drawer.Content placement="left">
