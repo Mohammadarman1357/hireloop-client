@@ -26,7 +26,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full">
-      <div className="mx-auto max-w-7xl bg-[#1d1d1dc7] px-4 sm:px-5">
+      <div className="mx-auto bg-[#1d1d1dc7] px-4 sm:px-5">
 
         <header className="flex h-[60px] items-center justify-between">
 
