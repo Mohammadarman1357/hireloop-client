@@ -95,7 +95,6 @@ export default function Navbar() {
       <div className="mx-auto bg-[#1d1d1dc7] px-4 sm:px-5">
 
         <header className="flex h-[60px] items-center justify-between">
-
           {/* Logo */}
           <Link
             href="/"
