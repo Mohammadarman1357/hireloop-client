@@ -19,7 +19,8 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-icons": "^5.7.0",
-    "reacticon": "^0.0.1"
+    "reacticon": "^0.0.1",
+    "sweetalert2": "^11.26.25"
   },
   "devDependencies": {
     "@gravity-ui/icons": "^2.23.1",

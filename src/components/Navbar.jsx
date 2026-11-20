@@ -4,8 +4,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession,signOut } from "@/lib/auth-client";
+import { useSession, signOut } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { label: "Browse Jobs", href: "/jobs" },
@@ -16,13 +18,77 @@ const navLinks = [
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
+  const router = useRouter();
 
   // console.log("Session data in Navbar : ", session, "Is Pending : ",isPending);
   const user = session?.user;
 
+
   const handleSignOut = async () => {
-    await signOut();
-  }
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You will be signed out of your HireLoop account.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Sign Out",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#F97316",
+      cancelButtonColor: "#374151",
+      background: "#171923",
+      color: "#ffffff",
+      reverseButtons: true,
+      customClass: {
+        popup: "rounded-2xl border border-white/10",
+        confirmButton: "rounded-lg px-6 py-2.5",
+        cancelButton: "rounded-lg px-6 py-2.5",
+      },
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      Swal.fire({
+        title: "Signing Out...",
+        text: "Please wait a moment.",
+        background: "#171923",
+        color: "#ffffff",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      await signOut();
+
+      await Swal.fire({
+        icon: "success",
+        title: "Signed Out!",
+        text: "You have successfully signed out.",
+        confirmButtonColor: "#F97316",
+        background: "#171923",
+        color: "#ffffff",
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+
+      router.push("/auth/signin");
+      router.refresh();
+
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Sign Out Failed",
+        text: error.message || "Something went wrong. Please try again.",
+        confirmButtonText: "Okay",
+        confirmButtonColor: "#F97316",
+        background: "#171923",
+        color: "#ffffff",
+      });
+    }
+  };
+
 
   return (
     <nav className="sticky top-0 z-50 w-full">
