@@ -1,10 +1,11 @@
-
 "use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Button, Form, Input, Switch, TextArea } from "@heroui/react";
 import Swal from "sweetalert2";
+import { createJob } from "@/lib/actions/jobs";
+import { redirect } from "next/navigation";
 
 const categories = [
     "Technology",
@@ -340,17 +341,25 @@ export default function PostNewJobPage() {
             setIsSubmitting(true);
 
             // API integration will go here.
-            console.log("Job Submission:", payload);
+            const res = await createJob(payload);
 
-            await Swal.fire({
-                icon: "success",
-                title: "Job Submitted Successfully!",
-                text: "Your job details have been validated and are ready for publishing.",
-                confirmButtonText: "Continue",
-                confirmButtonColor: "#7c3aed",
-                background: "#202023",
-                color: "#ffffff",
-            });
+            // console.log("Job Submission:", payload);
+
+            if (res.insertedId) {
+                await Swal.fire({
+                    icon: "success",
+                    title: "Job Submitted Successfully!",
+                    text: "Your job details have been validated and are ready for publishing.",
+                    confirmButtonText: "Continue",
+                    confirmButtonColor: "#7c3aed",
+                    background: "#202023",
+                    color: "#ffffff",
+                });
+                e.target.reset();
+                setIsRemote(false);
+                // redirect("/dashboard/recruiter");
+            }
+
 
         } catch (error) {
             console.error("Job submission error:", error);
