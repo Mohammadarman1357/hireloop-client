@@ -3,7 +3,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Button, Input, TextArea } from "@heroui/react";
+import { Button, Form, Input, Switch, TextArea } from "@heroui/react";
+import Swal from "sweetalert2";
 
 const categories = [
     "Technology",
@@ -138,10 +139,6 @@ function SelectField({
     );
 }
 
-// ==========================================
-// Main Page
-// ==========================================
-
 export default function PostNewJobPage() {
 
     const [isRemote, setIsRemote] = useState(false);
@@ -149,9 +146,6 @@ export default function PostNewJobPage() {
     const [success, setSuccess] = useState(false);
     const [formError, setFormError] = useState("");
 
-    // ======================================
-    // Form State
-    // ======================================
 
     const [formData, setFormData] = useState({
         title: "",
@@ -171,10 +165,6 @@ export default function PostNewJobPage() {
         benefits: "",
     });
 
-    // ======================================
-    // Input Handler
-    // ======================================
-
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -187,18 +177,12 @@ export default function PostNewJobPage() {
         setSuccess(false);
     };
 
-    // ======================================
-    // Remote Toggle
-    // ======================================
 
     const handleRemoteToggle = () => {
         setIsRemote((prev) => !prev);
         setSuccess(false);
     };
 
-    // ======================================
-    // Date Validation
-    // ======================================
 
     const today = new Date();
 
@@ -208,43 +192,137 @@ export default function PostNewJobPage() {
         String(today.getDate()).padStart(2, "0"),
     ].join("-");
 
-    // ======================================
-    // Submit Handler
-    // ======================================
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setFormError("");
         setSuccess(false);
 
+        // Required Field Validation
+        const requiredFields = [
+            {
+                value: formData.title,
+                title: "Job Title Required",
+                text: "Please enter a job title.",
+            },
+            {
+                value: formData.category,
+                title: "Job Category Required",
+                text: "Please select a job category.",
+            },
+            {
+                value: formData.deadline,
+                title: "Application Deadline Required",
+                text: "Please select an application deadline.",
+            },
+            {
+                value: formData.responsibilities,
+                title: "Responsibilities Required",
+                text: "Please describe the job responsibilities.",
+            },
+            {
+                value: formData.requirements,
+                title: "Requirements Required",
+                text: "Please provide the job requirements.",
+            },
+        ];
+
+        // Check all required fields
+        const emptyField = requiredFields.find(
+            (field) => !field.value.trim()
+        );
+
+        if (emptyField) {
+            await Swal.fire({
+                icon: "error",
+                title: emptyField.title,
+                text: emptyField.text,
+                confirmButtonText: "Okay",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
+
+            return;
+        }
+
+        // Minimum Length Validation
+        if (formData.title.trim().length < 3) {
+            await Swal.fire({
+                icon: "error",
+                title: "Invalid Job Title",
+                text: "Job title must contain at least 3 characters.",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
+
+            return;
+        }
+
+        if (
+            formData.responsibilities.trim().length < 10 ||
+            formData.requirements.trim().length < 10
+        ) {
+            await Swal.fire({
+                icon: "error",
+                title: "Description Too Short",
+                text: "Responsibilities and requirements must contain at least 10 characters.",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
+
+            return;
+        }
+
+        // Salary Validation
         const minSalary = Number(formData.minSalary);
         const maxSalary = Number(formData.maxSalary);
 
-        // Salary Validation
         if (
             formData.minSalary !== "" &&
             formData.maxSalary !== "" &&
             minSalary > maxSalary
         ) {
-            setFormError(
-                "Maximum salary must be greater than or equal to minimum salary."
-            );
+            await Swal.fire({
+                icon: "error",
+                title: "Invalid Salary Range",
+                text: "Maximum salary must be greater than or equal to minimum salary.",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
+
             return;
         }
 
-        // Remote Location
+        // Remote Location Validation
         if (
             !isRemote &&
             (!formData.city.trim() || !formData.country.trim())
         ) {
-            setFormError("Please provide your job location.");
+            await Swal.fire({
+                icon: "error",
+                title: "Location Required",
+                text: "Please provide your job location.",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
+
             return;
         }
 
         // Prepare Submission Data
         const payload = {
             ...formData,
+            title: formData.title.trim(),
+            responsibilities: formData.responsibilities.trim(),
+            requirements: formData.requirements.trim(),
+            benefits: formData.benefits.trim(),
             isRemote,
             city: isRemote ? "" : formData.city.trim(),
             country: isRemote ? "" : formData.country.trim(),
@@ -264,19 +342,39 @@ export default function PostNewJobPage() {
             // API integration will go here.
             console.log("Job Submission:", payload);
 
-            setSuccess(true);
+            await Swal.fire({
+                icon: "success",
+                title: "Job Submitted Successfully!",
+                text: "Your job details have been validated and are ready for publishing.",
+                confirmButtonText: "Continue",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
 
         } catch (error) {
             console.error("Job submission error:", error);
-            setFormError("Something went wrong. Please try again.");
+
+            const errorMessage =
+                error?.response?.data?.message ||
+                error?.message ||
+                "Something went wrong. Please try again.";
+
+            await Swal.fire({
+                icon: "error",
+                title: "Submission Failed!",
+                text: errorMessage,
+                confirmButtonText: "Try Again",
+                confirmButtonColor: "#7c3aed",
+                background: "#202023",
+                color: "#ffffff",
+            });
+
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    // ======================================
-    // Render
-    // ======================================
 
     return (
         <div className="min-h-screen p-4 sm:p-6 lg:p-8">
@@ -326,7 +424,7 @@ export default function PostNewJobPage() {
                     {/* Form */}
                     {/* ================================= */}
 
-                    <form onSubmit={handleSubmit}>
+                    <Form validationBehavior="aria" onSubmit={handleSubmit}>
 
                         <div className="space-y-8 p-5 sm:p-7">
 
@@ -488,10 +586,15 @@ export default function PostNewJobPage() {
                                     {/* Remote Toggle */}
                                     {/* ================================= */}
 
+
+
+                                    {/* ================================= */}
+                                    {/* Remote Toggle */}
+                                    {/* ================================= */}
+
                                     <div className="flex items-center justify-between gap-4 rounded-lg border border-white/10 bg-[#202023] p-4 sm:col-span-2">
 
                                         <div>
-
                                             <h3 className="text-sm font-medium text-white">
                                                 Remote Position
                                             </h3>
@@ -499,37 +602,33 @@ export default function PostNewJobPage() {
                                             <p className="mt-1 text-xs text-gray-400">
                                                 Allow candidates to work remotely.
                                             </p>
-
                                         </div>
 
-                                        <button
-                                            type="button"
-                                            role="switch"
+                                        <Switch
+                                            isSelected={isRemote}
+                                            onChange={(selected) => {
+                                                setIsRemote(selected);
+                                                setSuccess(false);
+                                            }}
+                                            size="md"
                                             aria-label="Remote position"
-                                            aria-checked={isRemote}
-                                            onClick={handleRemoteToggle}
-                                            className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-300 ${
-                                                isRemote
-                                                    ? "bg-violet-600"
-                                                    : "bg-gray-600"
-                                            }`}
                                         >
-
-                                            <motion.span
-                                                animate={{
-                                                    x: isRemote ? 22 : 2,
-                                                }}
-                                                transition={{
-                                                    type: "spring",
-                                                    stiffness: 500,
-                                                    damping: 30,
-                                                }}
-                                                className="absolute top-1 left-0 h-4 w-4 rounded-full bg-white"
-                                            />
-
-                                        </button>
+                                            {({ isSelected }) => (
+                                                <Switch.Content>
+                                                    <Switch.Control
+                                                        className={`h-6 w-11 transition-colors duration-300 ${isSelected
+                                                            ? "!bg-violet-600"
+                                                            : "!bg-gray-600"
+                                                            }`}
+                                                    >
+                                                        <Switch.Thumb className="bg-white shadow-sm" />
+                                                    </Switch.Control>
+                                                </Switch.Content>
+                                            )}
+                                        </Switch>
 
                                     </div>
+
 
                                     {/* ================================= */}
                                     {/* Location */}
@@ -824,7 +923,7 @@ export default function PostNewJobPage() {
 
                         </div>
 
-                    </form>
+                    </Form>
 
                 </div>
 
