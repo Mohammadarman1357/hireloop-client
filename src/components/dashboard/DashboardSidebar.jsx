@@ -1,6 +1,6 @@
 "use client"
 
-import { LayoutSideContentLeft, Bell,Briefcase, Envelope, Gear, House, Magnifier, Person } from "@gravity-ui/icons";
+import { LayoutSideContentLeft, Briefcase, Envelope, Gear, House, Magnifier, Person, PencilToSquare } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ export function DashboardSidebar() {
     const navItems = [
         { icon: House, href: "/dashboard/recruiter", label: "Home" },
         { icon: Magnifier, href: "/dashboard/recruiter/jobs", label: "Jobs" },
-        { icon: Bell, href: "/dashboard/recruiter/jobs/new", label: "Post A Job" },
+        { icon: PencilToSquare, href: "/dashboard/recruiter/jobs/new", label: "Post A Job" },
         { icon: Briefcase, href: "/dashboard/recruiter/company", label: "Company Profile" },
         { icon: Envelope, href: "/messages", label: "Messages" },
         { icon: Person, href: "/profile", label: "Profile" },
