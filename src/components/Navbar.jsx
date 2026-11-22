@@ -8,6 +8,11 @@ import { useSession, signOut } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { motion, useReducedMotion } from "motion/react";
+
+// =================================
+// Navigation Links
+// =================================
 
 const navLinks = [
   { label: "Browse Jobs", href: "/jobs" },
@@ -15,14 +20,67 @@ const navLinks = [
   { label: "Pricing", href: "/pricing" },
 ];
 
+// =================================
+// Reusable Get Started Button
+// =================================
+
+function GetStartedButton({ onClick, fullWidth = false }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <motion.button
+      type="button"
+      whileHover={
+        shouldReduceMotion
+          ? undefined
+          : {
+              scale: 1.035,
+              y: -2,
+            }
+      }
+      whileTap={
+        shouldReduceMotion
+          ? undefined
+          : {
+              scale: 0.97,
+            }
+      }
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      }}
+      onClick={onClick}
+      className={`group relative flex h-11 ${
+        fullWidth ? "w-full" : "w-auto"
+      } items-center justify-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-blue-600 via-indigo-600 to-violet-600 px-5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition-shadow duration-300 hover:shadow-xl hover:shadow-indigo-600/30`}
+    >
+      {/* Shine Effect */}
+      <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full" />
+
+      <span className="relative z-10">
+        Get Started
+      </span>
+    </motion.button>
+  );
+}
+
+// =================================
+// Navbar Component
+// =================================
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const { data: session, isPending } = useSession();
+
   const router = useRouter();
 
-  // console.log("Session data in Navbar : ", session, "Is Pending : ",isPending);
   const user = session?.user;
 
+  // =================================
+  // Sign Out Handler
+  // =================================
 
   const handleSignOut = async () => {
     const result = await Swal.fire({
@@ -89,12 +147,25 @@ export default function Navbar() {
     }
   };
 
+  // =================================
+  // Get Started Handler
+  // =================================
+
+  const handleGetStarted = () => {
+    setIsMenuOpen(false);
+    router.push("/get-started");
+  };
+
+  // =================================
+  // Navbar UI
+  // =================================
 
   return (
     <nav className="sticky top-0 z-50 w-full">
       <div className="mx-auto bg-[#1d1d1dc7] px-4 sm:px-5">
 
         <header className="flex h-[60px] items-center justify-between">
+
           {/* Logo */}
           <Link
             href="/"
@@ -111,8 +182,12 @@ export default function Navbar() {
             />
           </Link>
 
+          {/* ================================= */}
           {/* Desktop Navigation */}
+          {/* ================================= */}
+
           <ul className="hidden items-center gap-5 md:flex lg:gap-6">
+
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -132,38 +207,44 @@ export default function Navbar() {
 
             {/* Sign In */}
             <li>
-
-              {user ?
+              {user ? (
                 <>
-                  <span>Hi, {user?.name} </span>
-                  <Button onClick={handleSignOut} variant="ghost" href="/auth/signin"
-                    className="ml-2">
+                  <span>
+                    Hi, {user?.name}
+                  </span>
+
+                  <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    href="/auth/signin"
+                    className="ml-2"
+                  >
                     Sign Out
                   </Button>
                 </>
-                :
+              ) : (
                 <Link
                   href="/auth/signin"
-                  className=" text-[#7568ff] transition-colors hover:text-[#968dff]"
+                  className="text-[#7568ff] transition-colors hover:text-[#968dff]"
                 >
                   Sign In
                 </Link>
-              }
-
+              )}
             </li>
 
             {/* Get Started */}
             <li>
-              <Link
-                href="/get-started"
-                className="inline-flex items-center justify-center rounded-lg bg-[#6054ff] px-4 py-2 font-medium text-[18px] text-white transition-all duration-200 hover:bg-[#5145ed]"
-              >
-                Get Started
-              </Link>
+              <GetStartedButton
+                onClick={handleGetStarted}
+              />
             </li>
+
           </ul>
 
+          {/* ================================= */}
           {/* Mobile Menu Toggle */}
+          {/* ================================= */}
+
           <button
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -206,13 +287,17 @@ export default function Navbar() {
 
         </header>
 
+        {/* ================================= */}
         {/* Mobile Navigation */}
+        {/* ================================= */}
+
         {isMenuOpen && (
           <div
             id="mobile-navigation"
             className="border-t border-white/10 py-3 md:hidden"
           >
             <ul className="flex flex-col gap-1">
+
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -227,6 +312,7 @@ export default function Navbar() {
 
               <li className="my-1 border-t border-white/10" />
 
+              {/* Sign In */}
               <li>
                 <Link
                   href="/auth/signin"
@@ -237,15 +323,14 @@ export default function Navbar() {
                 </Link>
               </li>
 
+              {/* Get Started */}
               <li className="pt-2">
-                <Link
-                  href="/get-started"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex h-9 w-full items-center justify-center rounded-lg bg-[#6054ff] text-xs font-medium text-white transition-colors hover:bg-[#5145ed]"
-                >
-                  Get Started
-                </Link>
+                <GetStartedButton
+                  fullWidth
+                  onClick={handleGetStarted}
+                />
               </li>
+
             </ul>
           </div>
         )}
