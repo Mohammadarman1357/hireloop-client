@@ -164,6 +164,7 @@ export default function PostNewJobPage() {
         responsibilities: "",
         requirements: "",
         benefits: "",
+        companyId:""
     });
 
     const handleChange = (e) => {
@@ -335,6 +336,8 @@ export default function PostNewJobPage() {
                 formData.maxSalary === ""
                     ? null
                     : Number(formData.maxSalary),
+            companyId: formData.companyId.trim(),
+            status: "active",
         };
 
         try {
@@ -591,10 +594,6 @@ export default function PostNewJobPage() {
 
                                     </div>
 
-                                    {/* ================================= */}
-                                    {/* Remote Toggle */}
-                                    {/* ================================= */}
-
 
 
                                     {/* ================================= */}
@@ -635,6 +634,32 @@ export default function PostNewJobPage() {
                                                 </Switch.Content>
                                             )}
                                         </Switch>
+
+                                    </div>
+
+                                    {/* Company ID */}
+                                    <div className="sm:col-span-2">
+
+                                        <label
+                                            htmlFor="title"
+                                            className={labelClass}
+                                        >
+                                            Company ID *
+                                        </label>
+
+                                        <Input
+                                            id="companyId"
+                                            name="companyId"
+                                            type="text"
+                                            value={formData.companyId}
+                                            onChange={handleChange}
+                                            placeholder="e.g. Company_123"
+                                            required
+                                            minLength={3}
+                                            maxLength={120}
+                                            variant="secondary"
+                                            className={inputClass}
+                                        />
 
                                     </div>
 
